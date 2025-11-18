@@ -17,12 +17,16 @@
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+    </script>
     <script>
       const canvas = document.querySelector("canvas");
       const context = canvas.getContext("2d");
       const frames = {
         currentIndex: 0,
-        maxIndex: 382,
+        maxIndex: 127,
       };
 
       let imagesLoaded = 0;
@@ -41,6 +45,9 @@
               loadImage(frames.currentIndex);
               startAnimation();
             }
+          };
+          img.onerror = () => {
+            console.log("Missing file:", imageURL);
           };
           images.push(img);
         }
@@ -62,7 +69,7 @@
           const offsetX = (canvas.width - newWidth) / 2;
           const offsetY = (canvas.height - newHeight) / 2;
 
-          context.clearRect(0, 0, canvas, width, canvas.height);
+          context.clearRect(0, 0, canvas.width, canvas.height);
           context.imageSmoothingEnabled = true;
           context.imageSmoothingQuality = "high";
           context.drawImage(img, offsetX, offsetY, newWidth, newHeight);
@@ -72,7 +79,7 @@
         }
       }
 
-      function startAnimatetion() {
+      function startAnimation() {
         var tl = gsap.timeline({
           scrollTrigger: {
             trigger: ".parent",
